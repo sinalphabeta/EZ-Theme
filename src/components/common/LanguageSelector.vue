@@ -6,21 +6,11 @@
 
     <div class="preload-flags" v-once>
 
-      <img :src="require('@/assets/i18N/VN.svg')" alt="Tiếng Việt" class="preload-flag">
 
       <img :src="require('@/assets/i18N/CN.svg')" alt="中文" class="preload-flag">
 
       <img :src="require('@/assets/i18N/GB.svg')" alt="English" class="preload-flag">
 
-      <img :src="require('@/assets/i18N/HK.svg')" alt="繁體中文" class="preload-flag">
-
-      <img :src="require('@/assets/i18N/JP.svg')" alt="日本語" class="preload-flag">
-
-      <img :src="require('@/assets/i18N/KR.svg')" alt="한국어" class="preload-flag">
-
-      <img :src="require('@/assets/i18N/RU.svg')" alt="Русский" class="preload-flag">
-
-      <img :src="require('@/assets/i18N/IR.svg')" alt="فارسی" class="preload-flag">
 
     </div>
 
@@ -93,21 +83,10 @@ import { useI18n } from 'vue-i18n';
 import { setLanguage } from '@/i18n';
 
 
-import vnFlag from '@/assets/i18N/VN.svg';
 
 import cnFlag from '@/assets/i18N/CN.svg';
 
 import gbFlag from '@/assets/i18N/GB.svg';
-
-import hkFlag from '@/assets/i18N/HK.svg';
-
-import jpFlag from '@/assets/i18N/JP.svg';
-
-import krFlag from '@/assets/i18N/KR.svg';
-
-import ruFlag from '@/assets/i18N/RU.svg';
-
-import irFlag from '@/assets/i18N/IR.svg';
 
 
 
@@ -139,71 +118,11 @@ export default {
 
       {
 
-        code: 'zh-TW',
-
-        name: '繁體中文',
-
-        flag: `<img src="${hkFlag}" alt="繁體中文" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
         code: 'en-US',
 
         name: 'English',
 
         flag: `<img src="${gbFlag}" alt="English" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
-        code: 'ja-JP',
-
-        name: '日本語',
-
-        flag: `<img src="${jpFlag}" alt="日本語" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
-        code: 'ko-KR',
-
-        name: '한국어',
-
-        flag: `<img src="${krFlag}" alt="한국어" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
-        code: 'ru-RU',
-
-        name: 'Русский',
-
-        flag: `<img src="${ruFlag}" alt="Русский" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
-        code: 'fa-IR',
-
-        name: 'فارسی',
-
-        flag: `<img src="${irFlag}" alt="فارسی" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
-
-      },
-
-      {
-
-        code: 'vi-VN',
-
-        name: 'Tiếng Việt',
-
-        flag: `<img src="${vnFlag}" alt="Tiếng Việt" class="flag-image" style="width: 100%; height: 100%; object-fit: cover;">`
 
       },
 

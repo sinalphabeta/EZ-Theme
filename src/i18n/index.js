@@ -38,31 +38,9 @@ const getBrowserLanguage = () => {
 
   if (browserLang === 'zh-CN') return 'zh-CN';
 
-  if (browserLang === 'vi-VN' || browserLang === 'vi') return 'vi-VN';
-
-  if (browserLang === 'zh-TW' || browserLang === 'zh-HK') return 'zh-TW';
-
-  if (browserLang === 'ja' || browserLang === 'ja-JP') return 'ja-JP';
-
-  if (browserLang === 'ko' || browserLang === 'ko-KR') return 'ko-KR';
-
-  if (browserLang === 'ru' || browserLang === 'ru-RU') return 'ru-RU';
-
-  if (browserLang === 'fa' || browserLang === 'fa-IR') return 'fa-IR';
-
   
 
   if (browserLang.startsWith('zh')) return 'zh-CN';
-
-  if (browserLang.startsWith('vi')) return 'vi-VN';
-
-  if (browserLang.startsWith('ja')) return 'ja-JP';
-
-  if (browserLang.startsWith('ko')) return 'ko-KR';
-
-  if (browserLang.startsWith('ru')) return 'ru-RU';
-
-  if (browserLang.startsWith('fa')) return 'fa-IR';
 
   
 
@@ -100,7 +78,7 @@ const getStoredLanguage = () => {
 
 
 
-const supportedLocales = ['zh-CN', 'vi-VN', 'en-US', 'zh-TW', 'ja-JP', 'ko-KR', 'ru-RU', 'fa-IR'];
+const supportedLocales = ['zh-CN', 'en-US'];
 
 
 
@@ -172,35 +150,11 @@ const loadLocaleMessages = async (isLoggedIn) => {
 
             module = await import( './locales/zh-CN.js');
 
-          } else if (locale === 'vi-VN') {
-
-            module = await import( './locales/vi-VN.js');
-
           } else if (locale === 'en-US') {
 
             module = await import( './locales/en-US.js');
 
-          } else if (locale === 'zh-TW') {
-
-            module = await import( './locales/zh-TW.js');
-
-          } else if (locale === 'ja-JP') {
-
-            module = await import( './locales/ja-JP.js');
-
-          } else if (locale === 'ko-KR') {
-
-            module = await import( './locales/ko-KR.js');
-
-          } else if (locale === 'ru-RU') {
-
-            module = await import( './locales/ru-RU.js');
-
-          } else if (locale === 'fa-IR') {
-
-            module = await import( './locales/fa-IR.js');
-
-          }
+          } 
 
           
 
