@@ -723,394 +723,207 @@ const renderedContent = computed(() => {
   if (!content) return '';
 
   try {
-
+    // 先处理模板变量
     content = processTemplateVariables(content);
-
     
+    // ⚠️ 关键修改：在Markdown渲染之前检查是否为复杂HTML
+    if (isComplexHtml(content)) {
+      // 直接处理HTML，跳过Markdown渲染
+      let processedContent = content;
 
-    let renderedMd = '';
-
-    try {
-
-      renderedMd = md.render(content);
-
-    } catch (mdError) {
-
-      console.error('Markdown渲染失败:', mdError);
-
-      renderedMd = content;
-      
-    }
-
-
-
-    if (isComplexHtml(content) || isComplexHtml(renderedMd)) {     
-
-      let processedContent = renderedMd;
-
-
-
+      // 提取样式标签
       const styleTagRegex = /<style[\s\S]*?<\/style>/gi;
-
       const styleMatches = [];
-
       let match;
-
       while ((match = styleTagRegex.exec(content)) !== null) {
-
         styleMatches.push(match[0]);
-
       }
-
       
-
+      // 注入脚本函数
       nextTick(() => {
-
         const scriptElement = document.createElement('script');
-
         scriptElement.innerHTML = `
-
           function copy(text) {
-
             if (text === '{{subscribeUrl}}') {
-
               let subscribeUrl = '';
-
               try {
-
                 const userPlan = localStorage.getItem('userPlan');
-
                 if (userPlan) {
-
                   const parsedPlan = JSON.parse(userPlan);
-
                   if (parsedPlan && parsedPlan.subscribeUrl) {
-
                     subscribeUrl = parsedPlan.subscribeUrl;
-
                   }
-
                 } else if (window.userPlan && window.userPlan.subscribeUrl) {
-
                   subscribeUrl = window.userPlan.subscribeUrl;
-
                 }
-
               } catch (e) {
-
                 console.error('获取订阅链接失败:', e);
-
               }
-
               
-
               navigator.clipboard.writeText(subscribeUrl)
-
                 .then(() => {
-
                   if (window.$toast && typeof window.$toast.success === 'function') {
-
                     window.$toast.success('已复制到剪贴板');
-
                   } else {
-
                     const event = new CustomEvent('eztheme-toast', { 
-
                       detail: { message: '已复制到剪贴板', type: 'success' } 
-
                     });
-
                     document.dispatchEvent(event);
-
                   }
-
                 })
-
                 .catch(() => {
-
                   const ta = document.createElement('textarea');
-
                   ta.value = subscribeUrl;
-
                   ta.style.position = 'fixed';
-
                   document.body.appendChild(ta);
-
                   ta.focus();
-
                   ta.select();
-
                   document.execCommand('copy');
-
                   document.body.removeChild(ta);
-
                   
-
                   if (window.$toast && typeof window.$toast.success === 'function') {
-
                     window.$toast.success('已复制到剪贴板');
-
                   } else {
-
                     const event = new CustomEvent('eztheme-toast', { 
-
                       detail: { message: '已复制到剪贴板', type: 'success' } 
-
                     });
-
                     document.dispatchEvent(event);
-
                   }
-
                 });
-
             } else {
-
               navigator.clipboard.writeText(text)
-
                 .then(() => {
-
                   if (window.$toast && typeof window.$toast.success === 'function') {
-
                     window.$toast.success('已复制到剪贴板');
-
                   } else {
-
                     const event = new CustomEvent('eztheme-toast', { 
-
                       detail: { message: '已复制到剪贴板', type: 'success' } 
-
                     });
-
                     document.dispatchEvent(event);
-
                   }
-
                 })
-
                 .catch(() => {
-
                   const ta = document.createElement('textarea');
-
                   ta.value = text;
-
                   ta.style.position = 'fixed';
-
                   document.body.appendChild(ta);
-
                   ta.focus();
-
                   ta.select();
-
                   document.execCommand('copy');
-
                   document.body.removeChild(ta);
-
                   
-
                   if (window.$toast && typeof window.$toast.success === 'function') {
-
                     window.$toast.success('已复制到剪贴板');
-
                   } else {
-
                     const event = new CustomEvent('eztheme-toast', { 
-
                       detail: { message: '已复制到剪贴板', type: 'success' } 
-
                     });
-
                     document.dispatchEvent(event);
-
                   }
-
                 });
-
             }
-
           }
-
           
-
           function jump(docId) {
-
             window.location.href = '/#/docs/' + docId;
-
           }
-
         `;
-
         document.head.appendChild(scriptElement);
-
         
-
         document.addEventListener('eztheme-toast', function(e) {
-
           if (e.detail && e.detail.message) {
-
             if (window.showToast) {
-
               window.showToast(e.detail.message, e.detail.type || 'success');
-
             } 
-
             else if (window.$toast) {
-
               const type = e.detail.type || 'success';
-
               if (typeof window.$toast[type] === 'function') {
-
                 window.$toast[type](e.detail.message);
-
               }
-
             }
-
           }
-
         });
-
         
-
         const docBody = document.querySelector('.doc-body');
-
         if (docBody) {
-
           docBody.removeEventListener('click', handleDocClick);
-
           docBody.addEventListener('click', handleDocClick);
-
         }
-
       });
-
       
-
+      // DOMPurify 清理
       processedContent = DOMPurify.sanitize(processedContent, {
-
-        ADD_TAGS: ['script', 'style', 'link', 'button', 'a', 'img', 'iframe', 'div', 'span'],
-
+        ADD_TAGS: ['script', 'style', 'link', 'button', 'a', 'img', 'iframe', 'div', 'span', 'input', 'label', 'meta', 'head', 'body', 'html'],
         ADD_ATTR: [
-
           'onclick', 'class', 'style', 'type', 'rel', 'href', 'target', 
-
           'src', 'alt', 'title', 'width', 'height', 'frameborder', 'allowfullscreen',
-
-          'data-original-onclick', 'data-href', 'data-target', 'data-*'
-
+          'data-original-onclick', 'data-href', 'data-target', 'data-*',
+          'id', 'name', 'value', 'readonly', 'aria-*', 'for', 'checked',
+          'charset', 'content', 'viewport', 'lang'
         ],
-
         ALLOW_DATA_ATTR: true,
-
         WHOLE_DOCUMENT: false,
-
         FORCE_BODY: false,
-
         FORBID_TAGS: [],
-
         FORBID_ATTR: [],
-
         ALLOW_UNKNOWN_PROTOCOLS: true,
-
-        ALLOW_ARIA_ATTR: true
-
+        ALLOW_ARIA_ATTR: true,
+        CUSTOM_ELEMENT_HANDLING: {
+          tagNameCheck: null,
+          attributeNameCheck: null,
+          allowCustomizedBuiltInElements: true,
+        }
       });
-
       
-
+      // 恢复样式标签
       if (styleMatches.length > 0) {
-
         const tempDiv = document.createElement('div');
-
         tempDiv.innerHTML = processedContent;
-
         styleMatches.forEach(styleTag => {
-
           tempDiv.insertAdjacentHTML('beforeend', styleTag);
-
         });
-
         processedContent = tempDiv.innerHTML;
-
       }
-
       
-
+      // 处理按钮和链接
       const tempDiv = document.createElement('div');
-
       tempDiv.innerHTML = processedContent;
-
       
-
       const buttons = tempDiv.querySelectorAll('button');
-
       buttons.forEach(button => {
-
         if (!button.classList.contains('eztheme-btn')) {
-
           button.classList.add('eztheme-btn');
-
         }
-
         
-
         const buttonText = button.textContent.trim().toLowerCase();
-
         if ((buttonText.includes('复制') || buttonText.includes('copy')) && 
-
             !button.hasAttribute('onclick')) {
-
           button.setAttribute('onclick', "copy('{{subscribeUrl}}')");
-
         }
-
         
-
         if (button.hasAttribute('href')) {
-
           button.setAttribute('data-href', button.getAttribute('href'));
-
         }
-
         
-
         const childLink = button.querySelector('a');
-
         if (childLink && childLink.hasAttribute('href')) {
-
           button.setAttribute('data-href', childLink.getAttribute('href'));
-
           if (childLink.hasAttribute('target')) {
-
             button.setAttribute('data-target', childLink.getAttribute('target'));
-
           }
-
         }
-
       });
-
       
-
       const links = tempDiv.querySelectorAll('a');
-
       links.forEach(link => {
-
         if (link.textContent.trim().toLowerCase().includes('复制') || 
-
             link.textContent.trim().toLowerCase().includes('订阅') || 
-
             link.textContent.trim().toLowerCase().includes('copy')) {
-
           link.classList.add('eztheme-btn');
-
         }
-
       });
-
       
-
-      // 3) 检测并替换 v2board-no-access 块为美化卡片
+      // 检测并替换 v2board-no-access 块为美化卡片
       const noAccessEls = tempDiv.querySelectorAll('.v2board-no-access');
       if (noAccessEls && noAccessEls.length > 0) {
         const cardHtml = buildNoAccessCardHtml();
@@ -1118,23 +931,23 @@ const renderedContent = computed(() => {
           el.outerHTML = cardHtml;
         });
       }
-
+      
       return tempDiv.innerHTML;
-
     } else {
-
+      // 简单内容才进行 Markdown 渲染
+      let renderedMd = '';
+      try {
+        renderedMd = md.render(content);
+      } catch (mdError) {
+        console.error('Markdown渲染失败:', mdError);
+        renderedMd = content;
+      }
       return renderedMd;
-
     }
-
   } catch (err) {
-
     console.error('Error processing content:', err);
-    
     return `<p class="error-message">${t('docs.contentFormatError')}</p>`;
-
   }
-
 });
 
 

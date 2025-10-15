@@ -1470,7 +1470,11 @@ export default {
     const formatDate = (dateString) => {
       if (!dateString) return '';
       const date = new Date(dateString * 1000);
-      return date.toLocaleDateString();
+      // 使用本地时区格式化日期，避免时区转换问题
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     };
 
     const updateQRCodeUrl = () => {
@@ -2027,6 +2031,44 @@ export default {
       flex-wrap: wrap;
       gap: 20px;
       margin-bottom: 15px;
+
+      // 移动端优化 - 正确的实现方式
+      @media (max-width: 768px) {
+        // 移除之前的所有复杂规则，使用简单的flexbox
+        display: block;
+        
+        // 套餐名称保持原样
+        .info-item:first-child {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid rgba(var(--border-color-rgb, 0, 0, 0), 0.1);
+        }
+        
+        // 为其他项目创建容器
+        .info-item:not(:first-child) {
+          display: inline-flex;
+          flex-direction: column;
+          width: calc(50% - 10px);
+          vertical-align: top;
+          margin-bottom: 15px;
+
+
+          // 第2和第4个项目（左侧）
+          &:nth-child(2), &:nth-child(4) {
+            margin-right: 20px;
+            text-align: left;
+          }
+          
+          // 第3和第5个项目（右侧）靠右
+          &:nth-child(3), &:nth-child(5) {
+            text-align: right;
+            margin-left: auto;
+          }
+        }
+      }
 
       .info-item {
         display: flex;

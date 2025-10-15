@@ -245,7 +245,7 @@ export default {
         dashboard: '仪表盘',
         shop: '商店',
         invite: '邀请',
-        docs: '文档',
+        docs: '教程',
         tickets: '工单',
         orders: '订单',
         nodes: '节点',
@@ -532,8 +532,8 @@ export default {
             }
         },
         stats: {
-            global_nodes: '全球节点',
-            global_nodes_desc: '遍布全球的高速节点',
+            global_nodes: '全球多地节点',
+            global_nodes_desc: '多国家高速节点',
             speed: '极速体验',
             speed_desc: '高速稳定的网络体验',
             streaming: '流媒体解锁',

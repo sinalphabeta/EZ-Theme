@@ -6,7 +6,7 @@
 
       <!-- 欢迎卡片 -->
 
-      <div class="dashboard-card welcome-card">
+      <!-- <div class="dashboard-card welcome-card">
 
         <div class="card-header">
 
@@ -20,7 +20,7 @@
 
         </div>
 
-      </div>
+      </div> -->
 
       
 
@@ -260,7 +260,7 @@
 
                   <span 
 
-                    v-for="(price, type) in getPlanPrices(plan)" 
+                    v-for="(price, type) in getAvailablePlanPrices(plan)" 
 
                     :key="type"
 
@@ -270,7 +270,6 @@
 
                       'active': getDisplayPriceType(plan) === type,
 
-                      'disabled': price === null
 
                     }"
 
@@ -278,9 +277,7 @@
 
                   >
 
-                    <IconCheck v-if="price !== null" class="tag-icon check" />
-
-                    <IconX v-else class="tag-icon error" />
+                    <IconCheck class="tag-icon check" />
 
                     {{ $t(`shop.plan.price_options.${getPriceTypeKey(type)}`) }}
 
@@ -560,6 +557,31 @@ export default {
 
       showPopup.value = false;
 
+    };
+
+
+
+    // 新增方法：获取套餐的可用价格周期（只返回价格不为 null 的周期）
+    const getAvailablePlanPrices = (plan) => {
+      const allPrices = {
+        month_price: plan.month_price,
+        quarter_price: plan.quarter_price,
+        half_year_price: plan.half_year_price,
+        year_price: plan.year_price,
+        two_year_price: plan.two_year_price,
+        three_year_price: plan.three_year_price,
+        onetime_price: plan.onetime_price
+      };
+      
+      // 只返回价格不为 null 的周期
+      const availablePrices = {};
+      Object.entries(allPrices).forEach(([type, price]) => {
+        if (price !== null && price !== undefined) {
+          availablePrices[type] = price;
+        }
+      });
+      
+      return availablePrices;
     };
 
     
@@ -1270,6 +1292,8 @@ export default {
 
       SHOP_CONFIG,
 
+      getAvailablePlanPrices,
+
       calculateDiscount
 
     };
@@ -1654,7 +1678,7 @@ export default {
 
     @media (max-width: 768px) {
 
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
 
     }
 
@@ -1679,6 +1703,20 @@ export default {
       transition: all 0.3s ease;
 
       
+      // 移动端优化
+
+      @media (max-width: 768px) {
+
+        padding: 16px 12px; // 减少内边距
+        
+        flex-direction: column; // 改为垂直布局
+        
+        text-align: center; // 文字居中
+        
+        min-height: auto; // 移除最小高度限制
+      
+      }      
+
 
       &:hover {
 
@@ -1710,6 +1748,32 @@ export default {
 
         color: var(--theme-color);
 
+
+        // 移动端图标调整
+
+        @media (max-width: 768px) {
+
+          width: 48px; // 稍微缩小图标容器
+
+          height: 48px;
+
+          margin-right: 0; // 移除右边距
+
+          margin-bottom: 12px; // 添加底部边距
+
+          border-radius: 10px;
+          
+          svg {
+
+            width: 24px; // 缩小图标
+
+            height: 24px;
+
+          }
+
+        }
+        
+
       }
 
       
@@ -1719,6 +1783,12 @@ export default {
         flex: 1;
 
         
+        @media (max-width: 768px) {
+
+          flex: none; // 移动端不占满剩余空间
+
+        }
+
 
         .stats-value {
 
@@ -1730,6 +1800,15 @@ export default {
 
           margin-bottom: 5px;
 
+
+          @media (max-width: 768px) {
+
+            font-size: 16px; // 稍微缩小字体
+
+            margin-bottom: 4px;
+
+          }
+
         }
 
         
@@ -1739,6 +1818,16 @@ export default {
           font-size: 14px;
 
           color: var(--secondary-text-color);
+
+
+          @media (max-width: 768px) {
+
+            font-size: 12px; // 缩小描述文字
+
+            line-height: 1.3; // 调整行高
+            
+          }
+
 
         }
 
@@ -2322,7 +2411,7 @@ export default {
 
     height: 40px;
 
-    width: auto;
+    width: 100%;
 
     min-width: 120px;
 
@@ -2796,7 +2885,7 @@ export default {
 
     .stats-grid {
 
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
 
     }
 

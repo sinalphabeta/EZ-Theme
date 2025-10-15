@@ -11,7 +11,7 @@
 
       <!-- 欢迎卡片 -->
 
-      <div class="dashboard-card welcome-card">
+      <!-- <div class="dashboard-card welcome-card">
 
         <div class="card-header">
 
@@ -25,7 +25,7 @@
 
         </div>
 
-      </div>
+      </div> -->
 
       
 
@@ -33,7 +33,7 @@
 
       <div class="docs-header">
 
-        <h1 class="docs-title">{{ $t('docs.title') }}</h1>
+        <!-- <h1 class="docs-title">{{ $t('docs.title') }}</h1> -->
 
         
 
