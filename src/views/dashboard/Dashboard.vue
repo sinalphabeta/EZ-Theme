@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="dashboard-container">
     <div class="dashboard-inner">
-      <div class="dashboard-card welcome-card" :class="{'card-animate': !loading.userInfo}">
+      <!-- <div class="dashboard-card welcome-card" :class="{'card-animate': !loading.userInfo}">
         <div class="card-header">
           <h2 class="card-title">{{ $t('dashboard.welcome') }}</h2>
         </div>
@@ -12,7 +12,7 @@
             <span>{{ userStats.userEmail }}</span>
           </p>
         </div>
-      </div>
+      </div> -->
 
       <!-- 通知区域 -->
       <!-- 待处理事项提示 -->
