@@ -208,13 +208,7 @@ const DEFAULT_SITE_CONFIG = {
     // Landing页面多语言标语
     landingText: {
         'zh-CN': '探索全球网络无限可能',
-        'vi-VN': 'Khám phá khả năng vô hạn của mạng toàn cầu',
-        'en-US': 'Explore Unlimited Possibilities of Global Network',
-        'zh-TW': '探索全球網絡無限可能',
-        'ja-JP': 'グローバルネットワークの無限の可能性',
-        'ko-KR': '글로벌 네트워크의 무한한 가능성을 탐색하세요',
-        'ru-RU': 'Исследуйте безграничные возможности глобальной сети',
-        'fa-IR': 'امکانات نامحدود شبکه جهانی را کاوش کنید'
+        'en-US': 'Explore Unlimited Possibilities of Global Network'
     },
 
     // 自定义landing页面路径（相对于public目录）
@@ -233,6 +227,9 @@ const DEFAULT_BASE_CONFIG = {
 
     // 主题色 (16进制颜色值) TODO
     primaryColor: '#00947c',
+
+    // 暗色主题的主题色 (16进制颜色值)
+    darkColor: '#F0BE96', // 添加这一行，设置暗色主题的主题色
 
     // 是否启用落地页 (true=启用, false=禁用) TODO
     enableLandingPage: true

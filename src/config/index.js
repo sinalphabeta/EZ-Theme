@@ -103,6 +103,9 @@ export const config  = {
         // 主题色 (16进制颜色值)
         primaryColor: '#355cc2',
 
+        // 暗色主题的主题色 (16进制颜色值)
+        darkColor: '#F0BE96', // 添加这一行，设置暗色主题的主题色
+
         // 是否启用落地页 (true=启用, false=禁用)
         enableLandingPage: true // 默认启用
     },
