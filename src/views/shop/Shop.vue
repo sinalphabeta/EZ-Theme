@@ -331,7 +331,7 @@
 
                 >
 
-                  <IconCheck v-if="feature.support" class="feature-icon enabled" />
+                  <IconChecks v-if="feature.support" class="feature-icon enabled" />
 
                   <IconX v-else class="feature-icon disabled" />
 
@@ -441,7 +441,9 @@ import {
 
   IconCircle,
 
-  IconCircleCheck
+  IconCircleCheck,
+
+  IconChecks
 
 } from '@tabler/icons-vue';
 
@@ -477,7 +479,9 @@ export default {
 
     IconCircleCheck,
 
-    ShopPopup
+    ShopPopup,
+
+    IconChecks
 
   },
 
