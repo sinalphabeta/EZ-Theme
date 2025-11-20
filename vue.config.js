@@ -31,10 +31,21 @@ module.exports = defineConfig({
   assetsDir: "static",
   lintOnSave: false,
   productionSourceMap: false,
+
+  transpileDependencies: [
+    '@vueuse/motion'
+  ],
   
   configureWebpack: (config) => {
     config.experiments = { ...config.experiments, asyncWebAssembly: true, syncWebAssembly: true };
-    config.resolve = { ...config.resolve, alias: { "@": path.resolve(__dirname, "src") } };
+    config.resolve = { 
+      ...config.resolve, 
+      alias: { 
+        "@": path.resolve(__dirname, "src"),
+        // 强制指向 CommonJS 版本，彻底避开 import.meta 报错
+        '@vueuse/motion$': path.resolve(__dirname, 'node_modules/@vueuse/motion/dist/index.cjs')
+      } 
+    };
     
     config.plugins.push(
       new webpack.DefinePlugin({
